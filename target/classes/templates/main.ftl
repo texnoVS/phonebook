@@ -21,14 +21,26 @@
 <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
     Add new contact
 </a>
-<div class="collapse" id="collapseExample">
+<div class="collapse <#if contact??>show</#if>" id="collapseExample">
     <div class="form-group mt-3">
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <input class="form-control" type="text" name="surname" placeholder="Surname"/>
+                <input class="form-control ${(surnameError??)?string('is-invalid', '')}" type="text"
+                       value="<#if contact??>${contact.surname}</#if>" name="surname" placeholder="Surname"/>
+                <#if surnameError??>
+                    <div class="invalid-feedback">
+                        ${surnameError}
+                    </div>
+                </#if>
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="name" placeholder="Name">
+                <input class="form-control" type="text" value="<#if contact??>${contact.name}</#if>"
+                       name="name" placeholder="Name">
+                <#if nameError??>
+                    <div class="invalid-feedback">
+                        ${nameError}
+                    </div>
+                </#if>
             </div>
             <div class="form-group">
                 <div class="custom-file">

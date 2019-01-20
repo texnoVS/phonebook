@@ -1,6 +1,9 @@
 package com.study.phonebook.domain;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Contact {
@@ -8,7 +11,10 @@ public class Contact {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @NotBlank(message = "Please fill the surname")
+    @Length(max = 255, message = "Surname too long (more then 255)")
     private String surname;
+    @Length(max = 255, message = "Name too long (more then 255)")
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)

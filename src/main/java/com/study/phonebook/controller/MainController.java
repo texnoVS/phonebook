@@ -8,13 +8,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
@@ -49,31 +53,40 @@ public class MainController {
     @PostMapping("/main")
     public String add (
             @AuthenticationPrincipal User user,
-            @RequestParam String surname,
-            @RequestParam String name,
+            @Valid Contact contact,
+            BindingResult bindingResult,
             @RequestParam("file") MultipartFile file,
-            Map<String, Object> model
+            Model model
     ) throws IOException {
-        Contact contact = new Contact(surname, name, user);
+        contact.setAuthor(user);
 
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
-            File uploadDir = new File(uploadPath);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("contact", contact);
+        } else {
+            if (file != null && !file.getOriginalFilename().isEmpty()) {
+                File uploadDir = new File(uploadPath);
+
+                if (!uploadDir.exists()) {
+                    uploadDir.mkdir();
+                }
+
+                String uuidFile = UUID.randomUUID().toString();
+                String resultFilename = uuidFile + "." + file.getOriginalFilename();
+
+                file.transferTo(new File(uploadPath + "/" + resultFilename));
+
+                contact.setFilename(resultFilename);
             }
 
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "." + file.getOriginalFilename();
+            model.addAttribute("contact", null);
 
-            file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-            contact.setFilename(resultFilename);
+            contactRepo.save(contact);
         }
-
-        contactRepo.save(contact);
         Iterable<Contact> contacts = contactRepo.findByAuthor(user);
-        model.put("contacts", contacts);
+        model.addAttribute("contacts", contacts);
         return "main";
     }
 
