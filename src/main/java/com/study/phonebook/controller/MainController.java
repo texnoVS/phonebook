@@ -77,18 +77,18 @@ public class MainController {
         return "main";
     }
 
-    @GetMapping("/profile/{contact}")
+    @GetMapping("/contact/{id}")
     public String profile(
             @AuthenticationPrincipal User user,
-            @PathVariable Integer contact,
+            @PathVariable Integer id,
             Model model
     ) {
-        Iterable<Contact> viewContact = contactRepo.findByAuthorAndId(user, contact);
+        Iterable<Contact> viewContact = contactRepo.findByAuthorAndId(user, id);
         model.addAttribute("viewContact", viewContact);
-        return "profile";
+        return "contact";
     }
 
-    @PostMapping("/profile/{id}")
+    @PostMapping("/contact/{id}")
     public String edit(
             @AuthenticationPrincipal User user,
             @RequestParam String name,
@@ -107,7 +107,7 @@ public class MainController {
             contact.setFilename(resultFilename);
         }
         contactRepo.save(contact);
-        return "redirect:/profile/{id}";
+        return "redirect:/contact/{id}";
     }
 
     @GetMapping("delete/{id}")
@@ -125,8 +125,9 @@ public class MainController {
             @PathVariable Integer id
     ) {
         Contact contact = (contactRepo.findByAuthorAndId(user, id).get(0));
+
         contact.setFilename(null);
         contactRepo.save(contact);
-        return "redirect:/profile/{id}";
+        return "redirect:/contact/{id}";
     }
 }

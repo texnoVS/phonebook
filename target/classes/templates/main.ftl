@@ -25,10 +25,10 @@
     <div class="form-group mt-3">
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <input class="form-control" type="text" name="surname" placeholder="Введите Фамилию"/>
+                <input class="form-control" type="text" name="surname" placeholder="Surname"/>
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="name" placeholder="Введите Имя">
+                <input class="form-control" type="text" name="name" placeholder="Name">
             </div>
             <div class="form-group">
                 <div class="custom-file">
@@ -38,15 +38,15 @@
             </div>
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
             <div class="form-group">
-                <button class="btn btn-primary" type="submit">Добавить</button>
+                <button class="btn btn-primary" type="submit">Add</button>
             </div>
         </form>
     </div>
 </div>
 
-<div class="card-columns mt-2">
+<div class="card-columns mt-3">
     <#list contacts as contact>
-        <a href="/profile/${contact.id}">
+        <a href="/contact/${contact.id}">
             <div class="card my-3">
                 <div class="card-body">
                     <h5 class="card-text">
@@ -57,7 +57,7 @@
             </div>
         </a>
         <#else>
-        <h5>Nothing to show</h5>
+        <h5>No contacts</h5>
     </#list>
 </div>
 </@c.page>
