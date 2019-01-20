@@ -77,22 +77,16 @@ public class MainController {
         return "main";
     }
 
-    @GetMapping("delete/{contact}")
-    public String deleteContact(
-            @PathVariable Integer contact
+    @GetMapping("/profile/{contact}")
+    public String profile(
+            @AuthenticationPrincipal User user,
+            @PathVariable Integer contact,
+            Model model
     ) {
-        contactRepo.deleteById(contact);
-        return "redirect:/main";
+        Iterable<Contact> viewContact = contactRepo.findByAuthorAndId(user, contact);
+        model.addAttribute("viewContact", viewContact);
+        return "profile";
     }
-
-//    @RequestMapping(method = RequestMethod.GET, value = "delete/{contact}", name = "delFilename")
-//    @ResponseBody
-//    public String deleteImg(
-//            @PathVariable Integer contact
-//    ) {
-//        contactRepo.deleteFilenameById(contact);
-//        return "redirect:/profile/{id}";
-//    }
 
     @PostMapping("/profile/{id}")
     public String edit(
@@ -113,17 +107,26 @@ public class MainController {
             contact.setFilename(resultFilename);
         }
         contactRepo.save(contact);
+        return "redirect:/profile/{id}";
+    }
+
+    @GetMapping("delete/{id}")
+    public String deleteContact(
+            @AuthenticationPrincipal User user,
+            @PathVariable Integer id
+    ) {
+        contactRepo.deleteByAuthorAndId(user, id);
         return "redirect:/main";
     }
 
-    @GetMapping("/profile/{contact}")
-    public String profile(
+    @GetMapping("deleteIMG/{id}")
+    public String deleteIMG(
             @AuthenticationPrincipal User user,
-            @PathVariable Integer contact,
-            Model model
+            @PathVariable Integer id
     ) {
-        Iterable<Contact> viewContact = contactRepo.findByAuthorAndId(user, contact);
-        model.addAttribute("viewContact", viewContact);
-        return "profile";
+        Contact contact = (contactRepo.findByAuthorAndId(user, id).get(0));
+        contact.setFilename(null);
+        contactRepo.save(contact);
+        return "redirect:/profile/{id}";
     }
 }

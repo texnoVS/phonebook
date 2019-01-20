@@ -4,15 +4,17 @@
 
 <form method="post" enctype="multipart/form-data">
     <#list viewContact as contact>
-        <div class="photo-icon mb-4">
+        <div class="photo-icon mb-3">
             <#if contact.filename??>
                 <img src="/img/${contact.filename}">
-                <#--<div id="img_btn">-->
-                    <#--<a href="/delete/${contact.filename}" name="delFilename" class="btn btn-outline-danger btn-sm">Delete img</a>-->
-                <#--</div>-->
             <#else>
                 <img src="/img/Default.png">
             </#if>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-md-auto">
+                <a href="/deleteIMG/${contact.id}" class="btn btn-outline-danger mb-4">Delete img</a>
+            </div>
         </div>
         <div class="form-group row">
             <label for="staticEmail" class="col-sm-1 col-form-label">Surname</label>
@@ -35,8 +37,8 @@
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         <div class="form-group">
-            <button id="btn-profile1" class="btn btn-outline-primary btn-sm" type="submit">Save</button>
-            <a href="/delete/${contact.id}" id="btn-profile2" role="button" class="btn btn-outline-danger btn-sm">Delete contact</a>
+            <button id="btn-profile1" class="btn btn-primary" type="submit">Save</button>
+            <a href="/delete/${contact.id}" id="btn-profile2" role="button" class="btn btn-danger">Delete contact</a>
         </div>
     </#list>
 </form>
