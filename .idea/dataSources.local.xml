@@ -11,11 +11,5 @@
       <user-name>root</user-name>
       <introspection-schemas>*:phonebook</introspection-schemas>
     </data-source>
-    <data-source name="PC" uuid="a52ba0b4-1ad1-4c1b-a4ec-484a07fcfbbe">
-      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
-      <secret-storage>master_key</secret-storage>
-      <first-sync>true</first-sync>
-      <user-name>root</user-name>
-    </data-source>
   </component>
 </project>
