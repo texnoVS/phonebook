@@ -106,12 +106,14 @@ public class MainController {
             @AuthenticationPrincipal User user,
             @RequestParam String name,
             @RequestParam String surname,
+            @RequestParam String phone,
             @RequestParam("file") MultipartFile file,
             @PathVariable Integer id
     ) throws IOException {
         Contact contact = (contactRepo.findByAuthorAndId(user, id).get(0));
         contact.setName(name);
         contact.setSurname(surname);
+        contact.setPhone(phone);
         if (file != null && !file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
             String uuidFile = UUID.randomUUID().toString();
@@ -120,7 +122,7 @@ public class MainController {
             contact.setFilename(resultFilename);
         }
         contactRepo.save(contact);
-        return "redirect:/contact/{id}";
+        return "redirect:/main";
     }
 
     @GetMapping("delete/{id}")

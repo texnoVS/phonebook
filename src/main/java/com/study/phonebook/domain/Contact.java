@@ -16,6 +16,8 @@ public class Contact {
     private String surname;
     @Length(max = 255, message = "Name too long (more then 255)")
     private String name;
+    @Length(max = 255, message = "Number too long (more then 255)")
+    private String phone;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -27,14 +29,26 @@ public class Contact {
     }
 
     public Contact(
-            String surname,
-            String name,
+            @NotBlank(message = "Please fill the surname") @Length(max = 255, message = "Surname too long (more then 255)") String surname,
+            @Length(max = 255, message = "Name too long (more then 255)") String name,
+            @Length(max = 255, message = "Number too long (more then 255)") String phone,
             User user
     ) {
         this.surname = surname;
         this.name = name;
+        this.phone = phone;
         this.author = user;
     }
+
+    //    public Contact(
+//            String surname,
+//            String name,
+//            User user
+//    ) {
+//        this.surname = surname;
+//        this.name = name;
+//        this.author = user;
+//    }
 
     public String getAuthorName() {
         return author != null ? author.getUsername() : "<none>";
@@ -78,5 +92,13 @@ public class Contact {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
