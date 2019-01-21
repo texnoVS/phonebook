@@ -91,11 +91,7 @@ public class MainController {
     }
 
     @GetMapping("/contact/{id}")
-    public String profile(
-            @AuthenticationPrincipal User user,
-            @PathVariable Integer id,
-            Model model
-    ) {
+    public String profile(@AuthenticationPrincipal User user, @PathVariable Integer id, Model model) {
         Iterable<Contact> viewContact = contactRepo.findByAuthorAndId(user, id);
         model.addAttribute("viewContact", viewContact);
         return "contact";
@@ -126,23 +122,19 @@ public class MainController {
     }
 
     @GetMapping("delete/{id}")
-    public String deleteContact(
-            @AuthenticationPrincipal User user,
-            @PathVariable Integer id
-    ) {
+    public String deleteContact(@AuthenticationPrincipal User user, @PathVariable Integer id) {
         contactRepo.deleteByAuthorAndId(user, id);
         return "redirect:/main";
     }
 
     @GetMapping("deleteIMG/{id}")
-    public String deleteIMG(
-            @AuthenticationPrincipal User user,
-            @PathVariable Integer id
-    ) {
+    public String deleteIMG(@AuthenticationPrincipal User user, @PathVariable Integer id) {
         Contact contact = (contactRepo.findByAuthorAndId(user, id).get(0));
-
-        contact.setFilename(null);
-        contactRepo.save(contact);
+        File file = new File(uploadPath + "/" + contact.getFilename());
+        if (file.delete()) {
+            contact.setFilename(null);
+            contactRepo.save(contact);
+        }
         return "redirect:/contact/{id}";
     }
 }
