@@ -19,7 +19,13 @@
         <div class="form-group row">
             <label for="staticEmail" class="col-sm-1 col-form-label">Surname</label>
             <div class="col-sm-11">
-                <input class="form-control" type="text" name="surname" value="${contact.surname}" placeholder="Enter surname" />
+                <input class="form-control" type="text" name="surname"
+                       value="${contact.surname}" placeholder="Enter surname" />
+                <#if surnameError??>
+                    <div class="invalid-feedback">
+                        ${surnameError}
+                    </div>
+                </#if>
             </div>
         </div>
         <div class="form-group row">
@@ -32,7 +38,7 @@
             <label for="staticEmail" class="col-sm-2 col-form-label">Phone number</label>
             <div class="col-sm-10">
                 <input id="online_phone" class="form-control" type="tel" name="phone" value="${contact.phone}"
-                       autofocus="autofocus" required="required"
+                       autofocus="autofocus"
                        pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
                        placeholder="+7(___)___-__-__">
             </div>

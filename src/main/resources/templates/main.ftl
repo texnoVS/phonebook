@@ -44,7 +44,7 @@
             </div>
             <div class="form-group">
                 <input id="online_phone" class="form-control" type="tel" maxlength="50"
-                       autofocus="autofocus" required="required"
+                       autofocus="autofocus"
                        pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}"
                        name="phone" placeholder="+7(___)___-__-__">
                 <#if phoneError??>
