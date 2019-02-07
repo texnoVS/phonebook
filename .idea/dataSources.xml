@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Mac" uuid="8d1c69cb-ef95-4dd4-b0ce-cb39ef0c1ef4">
+    <data-source source="LOCAL" name="PC" uuid="aac00d0d-5e3e-414c-90da-8e4db65d5308">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:8889/phonebook</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/phonebook</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />
@@ -15,11 +15,11 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="PC" uuid="aac00d0d-5e3e-414c-90da-8e4db65d5308">
+    <data-source source="LOCAL" name="Mac" uuid="df7cbfef-4ac8-46c6-b6b1-7545e7a746d1">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/phonebook</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:8889/phonebook</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />
