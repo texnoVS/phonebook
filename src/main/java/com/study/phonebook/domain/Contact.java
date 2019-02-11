@@ -5,10 +5,10 @@ import org.hibernate.validator.constraints.Length;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
-@Entity
+@Entity //Аннотация, позволяющая Spring понять, что клласс является сущностью (отдельной таблицей)
 public class Contact {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO) //Spring сам решает, как генерировать поле id
     private Integer id;
 
     @NotBlank(message = "Please fill the surname")
@@ -19,8 +19,8 @@ public class Contact {
     @Length(max = 255, message = "Number too long (more then 255)")
     private String phone;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER) //Аннотация, говорящая что у нас одному автору пренадлежит множество контактов
+    @JoinColumn(name = "user_id") //Задаём название колонки в базе данных
     private User author;
 
     private String filename;
@@ -39,16 +39,6 @@ public class Contact {
         this.phone = phone;
         this.author = user;
     }
-
-    //    public Contact(
-//            String surname,
-//            String name,
-//            User user
-//    ) {
-//        this.surname = surname;
-//        this.name = name;
-//        this.author = user;
-//    }
 
     public String getAuthorName() {
         return author != null ? author.getUsername() : "<none>";

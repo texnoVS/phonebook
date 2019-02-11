@@ -6,20 +6,23 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+//Конфигурация веб слоя, система авторизации от Spring
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
     @Value("${upload.path}")
     private String uploadPath;
 
+    //
     public void addViewControllers(ViewControllerRegistry registry) {
+        //Первый параметр (url), второй (имя шаблона)
         registry.addViewController("/login").setViewName("login");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/img/**")
-                .addResourceLocations("file://" + uploadPath + "/");
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
+        registry.addResourceHandler("/img/**") //Все файли по пути img будут перенаправляться
+                .addResourceLocations("file://" + uploadPath + "/"); //в текущую директорию
+        registry.addResourceHandler("/static/**") //При обращении к этому пути
+                .addResourceLocations("classpath:/static/"); //будет происходить поиск от начала дерева каталогов
     }
 }

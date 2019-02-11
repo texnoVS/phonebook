@@ -7,6 +7,7 @@ User editor
     <input type="text" name="username" value="${user.username}">
     <#list roles as role>
         <div>
+            <#--Методом Freemarker проверяем установку поле role (return true of false)-->
             <label><input type="checkbox" name="${role}" ${user.roles?seq_contains(role)?string("checked", "")}>${role}</label>
         </div>
     </#list>

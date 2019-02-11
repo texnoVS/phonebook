@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
-@Configuration
+@Configuration //Сообщает контейнеру Spring, что это класс конфигурации, содержащий определения и зависимости bean-компонентов
 public class MailConfig {
     @Value("${spring.mail.host}")
     private String host;
@@ -34,7 +34,8 @@ public class MailConfig {
     @Value("${mail.debug}")
     private String debug;
 
-    @Bean
+    //В текущей версии javaMailSender кривой, необходимо в ручную создавать @Bean
+    @Bean //В результате вызова метода возвращается bean-компонент, зарегистрированный в контексте приложения Spring
     public JavaMailSender getMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
@@ -45,7 +46,7 @@ public class MailConfig {
 
         Properties properties = mailSender.getJavaMailProperties();
         properties.setProperty("mail.transport.protocol", protocol);
-        properties.setProperty("mail.debug", debug);
+        properties.setProperty("mail.debug", debug); //Включает логи для проверки работы, тк не продакшн, могу себе позволить
         properties.setProperty("mail.smtp.auth", auth);
         properties.setProperty("mail.smtp.starttls.enable", enable);
 

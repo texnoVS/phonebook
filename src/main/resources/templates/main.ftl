@@ -21,10 +21,13 @@
 <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
     Add new contact
 </a>
+<#--Если присутствует сообщение об ошибке, то форма не схлопывается-->
 <div class="collapse <#if contact??>show</#if>" id="collapseExample">
     <div class="form-group mt-3">
         <form method="post" enctype="multipart/form-data">
             <div class="form-group">
+                <#--Проверка на существование surnameError, приводим логическое значение к строке с помощью ?string-->
+                    <#--Если получим true, то к названию класса припишется is-invalid, если false, то припишется пустая строка-->
                 <input class="form-control ${(surnameError??)?string('is-invalid', '')}" type="text"
                        value="<#if contact??>${contact.surname}</#if>" name="surname" placeholder="Surname"/>
                 <#if surnameError??>

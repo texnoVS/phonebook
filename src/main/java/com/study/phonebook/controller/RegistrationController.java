@@ -56,6 +56,7 @@ public class RegistrationController {
         return "redirect:/login";
     }
 
+    //Активация почтового кода
     @GetMapping("/activate/{code}")
     public String activate(
             Model model,

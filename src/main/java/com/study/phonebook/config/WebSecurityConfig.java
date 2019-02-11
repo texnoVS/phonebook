@@ -15,7 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true) //Включает проверку пользователя на наличие соответствующей роли
+//А конкретно включает аннотацию @PreAuthorize("hasAuthority('...')")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
@@ -23,7 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Bean
+    @Bean //Bean необходим, тк необходимо его инжектить в разным местах
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder(8);
     }
@@ -31,16 +32,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/", "/registration", "/static/**", "/activate/*").permitAll()
-                .anyRequest().authenticated()
+                .authorizeRequests() //Включаем авторизацию
+                .antMatchers("/", "/registration", "/static/**", "/activate/*").permitAll() //Разрешение на полный доступ для указанных url и каталогов
+                .anyRequest().authenticated() //Для всех остальных запростов требуем авторизацию
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .permitAll()
+                .formLogin() //Включаем form login
+                .loginPage("/login") //Mapping for login page
+                .permitAll() //Разрешаем всем пользоваться
                 .and()
-                .logout()
-                .permitAll();
+                .logout() //Включаем logout
+                .permitAll(); //Разрешаем всем пользоваться
     }
 
     @Override

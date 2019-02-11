@@ -1,3 +1,4 @@
+<#--Название макроса, переданная переменная, переданная переменная-->
 <#macro login path isRegisterForm>
    <form action="${path}" method="post">
        <div class="form-group row">
@@ -63,6 +64,6 @@
 <#macro logout>
 <form action="/logout" method="post">
     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-    <button class="btn btn-primary" type="submit">Logout</button>
+    <button class="btn btn-primary" type="submit">Sing out</button>
 </form>
 </#macro>

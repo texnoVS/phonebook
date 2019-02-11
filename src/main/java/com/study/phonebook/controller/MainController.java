@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 
 @Controller
 public class MainController {
-    @Autowired
+    @Autowired //Позволяет Spring работать с указанной базой данных в реализованном классе
     private ContactRepo contactRepo;
 
-    @Value("${upload.path}")
+    @Value("${upload.path}") //Spring ищет переменную в properties и вставляет её в указанную переменную
     private String uploadPath;
 
     @GetMapping("/")
@@ -40,8 +40,9 @@ public class MainController {
             Model model
     ) {
         Iterable<Contact> contacts = contactRepo.findByAuthor(user);
+
         if (filter != null && !filter.isEmpty()) {
-            contacts = contactRepo.findBySurnameAndAuthor(user, filter);
+            contacts = contactRepo.findByAuthorAndSurname(user, filter);
         } else {
             contacts = contactRepo.findByAuthor(user);
         }
@@ -53,8 +54,9 @@ public class MainController {
     @PostMapping("/main")
     public String add (
             @AuthenticationPrincipal User user,
-            @Valid Contact contact,
-            BindingResult bindingResult,
+            @Valid Contact contact, //Аннотация для запуска валидации
+            //BindingResult должна идти обязательно ДО Model, иначе все ошибки будут идти во View
+            BindingResult bindingResult, //Список сообщений ошибок валидации
             @RequestParam("file") MultipartFile file,
             Model model
     ) throws IOException {
@@ -69,6 +71,7 @@ public class MainController {
             if (file != null && !file.getOriginalFilename().isEmpty()) {
                 File uploadDir = new File(uploadPath);
 
+                //Проверка на существование директории для загрузки
                 if (!uploadDir.exists()) {
                     uploadDir.mkdir();
                 }
@@ -81,6 +84,7 @@ public class MainController {
                 contact.setFilename(resultFilename);
             }
 
+            //Если валидация рошла упешно, необходимо удалить выводимое сообщение
             model.addAttribute("contact", null);
 
             contactRepo.save(contact);
@@ -91,7 +95,7 @@ public class MainController {
     }
 
     @GetMapping("/contact/{id}")
-    public String profile(@AuthenticationPrincipal User user, @PathVariable Integer id, Model model) {
+    public String contact (@AuthenticationPrincipal User user, @PathVariable Integer id, Model model) {
         Iterable<Contact> viewContact = contactRepo.findByAuthorAndId(user, id);
         model.addAttribute("viewContact", viewContact);
         return "contact";

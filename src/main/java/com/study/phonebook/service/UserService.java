@@ -39,14 +39,15 @@ public class UserService implements UserDetailsService{
     public boolean addUser(User user) {
         User userFromDb = userRepo.findByUsername(user.getUsername());
 
+        //Если пользователь найден в базе данных, return false
         if (userFromDb != null) {
             return false;
         }
 
         user.setActive(true);
-        user.setRoles(Collections.singleton(Role.USER));
-        user.setActivationCode(UUID.randomUUID().toString());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(Collections.singleton(Role.USER)); //Создаем Set<> с одним единственным значением
+        user.setActivationCode(UUID.randomUUID().toString()); //Генерация Activation code
+        user.setPassword(passwordEncoder.encode(user.getPassword())); //Шифрование пароля
 
         userRepo.save(user);
 
@@ -68,8 +69,9 @@ public class UserService implements UserDetailsService{
     }
 
     public boolean activateUser(String code) {
-        User user = userRepo.findByActivationCode(code);
+        User user = userRepo.findByActivationCode(code); //Поиск пользователя по activation code
 
+        //Если пользователь не найден, return false
         if (user == null) {
             return false;
         }
@@ -89,10 +91,12 @@ public class UserService implements UserDetailsService{
 
         Set<String> roles = Arrays.stream(Role.values())
                 .map(Role::name)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toSet()); //Получаем набор ролей, присвоенных пользователю
 
         user.getRoles().clear();
 
+        //Проверяем пользоателя на наличие ролей
+        //В случае присутствия данной роли у пользователя, идет её присвоение
         for (String key : form.keySet()) {
             if (roles.contains(key)) {
                 user.getRoles().add(Role.valueOf(key));
@@ -105,6 +109,8 @@ public class UserService implements UserDetailsService{
     public void updateProfile(User user, String password, String email) {
         String userEmail = user.getEmail();
 
+        //Проверка на пустое поле И неравенство текущему email ИЛИ то, что пользовательский email не пустой И
+        //не соответствует email
         boolean isEmailChanged = (email != null && !email.equals(userEmail)) ||
                 (userEmail != null && !userEmail.equals(email));
 

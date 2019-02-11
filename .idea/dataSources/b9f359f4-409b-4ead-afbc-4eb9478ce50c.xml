@@ -5,6 +5,8 @@
       <DefaultCasing>lower/lower</DefaultCasing>
     </root>
     <schema id="2" parent="1" name="cdcol">
+      <Current>1</Current>
+      <Visible>1</Visible>
       <Collation>latin1_general_ci</Collation>
     </schema>
     <schema id="3" parent="1" name="information_schema">
@@ -915,94 +917,32 @@
       <Charset>utf8mb4</Charset>
       <DefaultForCharset>0</DefaultForCharset>
     </collation>
-    <table id="232" parent="7" name="contact">
+    <table id="232" parent="2" name="cds">
       <Engine>MyISAM</Engine>
     </table>
-    <table id="233" parent="7" name="hibernate_sequence">
-      <Engine>MyISAM</Engine>
-    </table>
-    <table id="234" parent="7" name="user_role">
-      <Engine>MyISAM</Engine>
-    </table>
-    <table id="235" parent="7" name="usr">
-      <Engine>MyISAM</Engine>
-    </table>
-    <column id="236" parent="232" name="id">
+    <column id="233" parent="232" name="titel">
       <Position>1</Position>
+      <DataType>varchar(200)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="234" parent="232" name="interpret">
+      <Position>2</Position>
+      <DataType>varchar(200)|0</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="235" parent="232" name="jahr">
+      <Position>3</Position>
       <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="237" parent="232" name="filename">
-      <Position>2</Position>
-      <DataType>varchar(255)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="238" parent="232" name="name">
-      <Position>3</Position>
-      <DataType>varchar(255)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="239" parent="232" name="surname">
+    <column id="236" parent="232" name="id">
       <Position>4</Position>
-      <DataType>varchar(255)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="240" parent="232" name="user_id">
-      <Position>5</Position>
-      <DataType>bigint(20)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="241" parent="232" name="FKnb4m6wpqpgln9ihen37rjk46g">
-      <ColNames>user_id</ColNames>
-    </index>
-    <key id="242" parent="232" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>id</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="243" parent="233" name="next_val">
-      <Position>1</Position>
-      <DataType>bigint(20)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="244" parent="234" name="user_id">
-      <Position>1</Position>
-      <DataType>bigint(20)|0</DataType>
+      <DataType>bigint(20) unsigned|0</DataType>
       <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="245" parent="234" name="roles">
-      <Position>2</Position>
-      <DataType>varchar(255)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="246" parent="234" name="FKfpm8swft53ulq2hl11yplpr5">
-      <ColNames>user_id</ColNames>
-    </index>
-    <column id="247" parent="235" name="id">
-      <Position>1</Position>
-      <DataType>bigint(20)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="248" parent="235" name="active">
-      <Position>2</Position>
-      <DataType>bit(1)|0</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="249" parent="235" name="password">
-      <Position>3</Position>
-      <DataType>varchar(255)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="250" parent="235" name="username">
-      <Position>4</Position>
-      <DataType>varchar(255)|0</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <key id="251" parent="235" name="PRIMARY">
+    <key id="237" parent="232" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

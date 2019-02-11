@@ -16,6 +16,7 @@ ${message?ifExists}
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Email:</label>
         <div class="col-sm-6">
+            <#--Value - если строчка в бд будет пустая, вернётся пустое значение и форма не упадёт-->
             <input type="email" name="email" class="form-control" placeholder="some@some.com" value="${email!''}"/>
         </div>
     </div>

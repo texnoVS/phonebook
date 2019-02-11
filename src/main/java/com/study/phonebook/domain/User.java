@@ -9,8 +9,8 @@ import javax.validation.constraints.NotBlank;
 import java.util.Collection;
 import java.util.Set;
 
-@Entity
-@Table(name = "usr")
+@Entity //Аннотация, позволяющая Spring понять, что клласс является сущностью (отдельной таблицей)
+@Table(name = "usr") //Указываем имя таблицы
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,8 +22,6 @@ public class User implements UserDetails {
     @NotBlank(message = "Password cannot be empty")
     private String password;
 
-
-
     private boolean active;
 
     @Email(message = "Email is not correct")
@@ -32,9 +30,10 @@ public class User implements UserDetails {
 
     private String activationCode;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-    @Enumerated(EnumType.STRING)
+    //Позволяет формировать таблицу с enum ролей
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER /*Формат подгрузка данных*/) //Позволяет формировать таблицу с enum ролей
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id")) //Создание таблицы user_role, соединяется с текущей таблицей через user_id
+    @Enumerated(EnumType.STRING) //Enum хотим хранить в виде строки
     private Set<Role> roles;
 
     public boolean isAdmin() {

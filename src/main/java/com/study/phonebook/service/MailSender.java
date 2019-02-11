@@ -19,10 +19,10 @@ public class MailSender {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
         mailMessage.setFrom(username);
-        mailMessage.setTo(emailTo);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(message);
+        mailMessage.setTo(emailTo); //Кому отправляем
+        mailMessage.setSubject(subject); //Тема письма
+        mailMessage.setText(message); //Тело письма
 
-        mailSender.send(mailMessage);
+        mailSender.send(mailMessage); //Отправка сообщения
     }
 }
