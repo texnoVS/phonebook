@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="/main"><#if authentication??>Contacts<#else>Login</#if></a>
+                <a class="nav-link" href="/main">Contacts</a>
             </li>
             <#if isAdmin>
                 <li class="nav-item">
