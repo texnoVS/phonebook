@@ -20,20 +20,22 @@
             <#else >
         </#if>
         <div class="form-group row">
-            <label for="staticEmail" class="col-sm-1 col-form-label">Surname</label>
-            <div class="col-sm-11">
-                <input class="form-control" type="text" name="surname"
-                       value="${contact.surname}" placeholder="Enter surname" />
-                <#if surnameError??>
-                    <div class="invalid-feedback">
-                        ${surnameError}
-                    </div>
-                </#if>
+        <#--Проверка на существование surnameError, приводим логическое значение к строке с помощью ?string-->
+        <#--Если получим true, то к названию класса припишется is-invalid, если false, то припишется пустая строка-->
+            <label for="staticEmail" class="col-sm-2 col-form-label">Surname</label>
+            <div class="col-sm-10">
+                <input class="form-control ${(surnameError??)?string('is-invalid', '')}" type="text"
+                       value="<#if contact??>${contact.surname}</#if>" name="surname" placeholder="Enter surname"/>
+                    <#if surnameError??>
+                        <div class="invalid-feedback">
+                            ${surnameError}
+                        </div>
+                    </#if>
             </div>
         </div>
         <div class="form-group row">
-            <label for="staticEmail" class="col-sm-1 col-form-label">Name</label>
-            <div class="col-sm-11">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-10">
                 <input class="form-control" type="text" name="name" value="${contact.name}" placeholder="Enter name">
             </div>
         </div>
@@ -44,8 +46,8 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Change photo</label>
-            <div class="custom-file col-sm-10 row">
+            <label for="staticEmail" class="col-sm-3 col-form-label">Change photo</label>
+            <div class="custom-file col-sm-9 row">
                 <input type="file" name="file" id="customFile">
                 <label class="custom-file-label" for="customFile">Choose file</label>
             </div>

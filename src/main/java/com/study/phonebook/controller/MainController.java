@@ -3,6 +3,7 @@ package com.study.phonebook.controller;
 import com.study.phonebook.domain.Contact;
 import com.study.phonebook.domain.User;
 import com.study.phonebook.repos.ContactRepo;
+import com.study.phonebook.service.MainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,6 +25,9 @@ import java.util.stream.Collectors;
 public class MainController {
     @Autowired //Позволяет Spring работать с указанной базой данных в реализованном классе
     private ContactRepo contactRepo;
+
+    @Autowired
+    private MainService mainService;
 
     @Value("${upload.path}") //Spring ищет переменную в properties и вставляет её в указанную переменную
     private String uploadPath;
@@ -68,23 +72,9 @@ public class MainController {
             model.mergeAttributes(errorsMap);
             model.addAttribute("contact", contact);
         } else {
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
+            mainService.saveAvatar(contact, file);
 
-                //Проверка на существование директории для загрузки
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFilename = uuidFile + "." + file.getOriginalFilename();
-
-                file.transferTo(new File(uploadPath + "/" + resultFilename));
-
-                contact.setFilename(resultFilename);
-            }
-
-            //Если валидация рошла упешно, необходимо удалить выводимое сообщение
+            //Если валидация прошла упешно, необходимо удалить выводимое сообщение
             model.addAttribute("contact", null);
 
             contactRepo.save(contact);
@@ -104,30 +94,43 @@ public class MainController {
     @PostMapping("/contact/{id}")
     public String edit(
             @AuthenticationPrincipal User user,
+            @Valid Contact contact,
+            BindingResult bindingResult,
             @RequestParam String name,
             @RequestParam String surname,
             @RequestParam String phone,
             @RequestParam("file") MultipartFile file,
-            @PathVariable Integer id
+            @PathVariable Integer id,
+            Model model
     ) throws IOException {
-        Contact contact = (contactRepo.findByAuthorAndId(user, id).get(0));
-        contact.setName(name);
-        contact.setSurname(surname);
-        contact.setPhone(phone);
-        if (file != null && !file.getOriginalFilename().isEmpty()) {
-            File uploadDir = new File(uploadPath);
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFilename = uuidFile + "." + file.getOriginalFilename();
-            file.transferTo(new File(uploadPath + "/" + resultFilename));
-            contact.setFilename(resultFilename);
+        contact.setAuthor(user);
+
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+            model.mergeAttributes(errorsMap);
+            model.addAttribute("contact", contact);
+            Iterable<Contact> viewContact = contactRepo.findByAuthorAndId(user, id);
+            model.addAttribute("viewContact", viewContact);
+            return "contact";
+        } else {
+            Contact myContact = (contactRepo.findByAuthorAndId(user, id).get(0));
+            myContact.setSurname(surname);
+            myContact.setName(name);
+            myContact.setPhone(phone);
+            mainService.saveAvatar(myContact, file);
+            contactRepo.save(myContact);
+            return "redirect:/main";
         }
-        contactRepo.save(contact);
-        return "redirect:/main";
     }
 
     @GetMapping("delete/{id}")
     public String deleteContact(@AuthenticationPrincipal User user, @PathVariable Integer id) {
-        contactRepo.deleteByAuthorAndId(user, id);
+        Contact contact = (contactRepo.findByAuthorAndId(user, id).get(0));
+        File file = new File(uploadPath + "/" + contact.getFilename());
+        if (file.delete()) {
+            contactRepo.deleteByAuthorAndId(user, id);
+        }
         return "redirect:/main";
     }
 
